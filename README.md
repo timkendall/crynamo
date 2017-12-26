@@ -22,7 +22,9 @@ TODO: Write usage instructions here
 
 ## Development
 
-TODO: Write development instructions here
+1. Follow the instructions here to setup [Local DynamoDB](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.html)
+1. Install Crystal deps with `shards install`
+1. Use [icr](https://github.com/crystal-community/icr) to play with things
 
 ## Contributing
 
