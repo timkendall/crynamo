@@ -26,6 +26,17 @@ TODO: Write usage instructions here
 1. Install Crystal deps with `shards install`
 1. Use [icr](https://github.com/crystal-community/icr) to play with things
 
+## Tip
+
+It's useful to define a bash command for launching DynamoDB. Add this to your `.bash_profile` to start DynamoDB with a simple `dynamodb` command.
+
+```bash
+dynamodb() {
+ cd /path/to/dynamodb
+ java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb
+}
+```
+
 ## Contributing
 
 1. Fork it ( https://github.com/[your-github-name]/crynamo/fork )
