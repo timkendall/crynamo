@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/timkendall/crynamo.svg?style=svg&circle-token=cb7f2cd61eadd947d1e775875fe21009526f62d2)](https://circleci.com/gh/timkendall/crynamo)
 
-Crynamo is a simple interface to [Amazon's DynamoDB](https://aws.amazon.com/dynamodb/) written in Crystal. Write now it is a fairl low-level wrapper that provides type marshalling between your Crystal program and DynamoDB.
+Crynamo is a simple interface to [Amazon's DynamoDB](https://aws.amazon.com/dynamodb/) written in Crystal. Right now it is a fairly low-level wrapper that provides type marshalling between your Crystal program and DynamoDB.
 
 ## Installation
 
