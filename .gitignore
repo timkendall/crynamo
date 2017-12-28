@@ -8,3 +8,5 @@
 /shard.lock
 
 .DS_Store
+
+.icr_*
