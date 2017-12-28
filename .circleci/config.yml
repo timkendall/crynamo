@@ -1,0 +1,80 @@
+version: 2
+
+references:
+  container_config: &container_config
+    working_directory: ~/crynamo
+    docker:
+      - image: crystallang/crystal:0.23.1
+    environment:
+      TZ: "/usr/share/zoneinfo/America/Los_Angeles"
+
+  workspace_root: &workspace_root
+    /tmp/workspace
+
+  attach_workspace: &attach_workspace
+    attach_workspace:
+      at: *workspace_root
+
+  restore_shards: &restore_shards
+    run:
+      name: Restore Shard dependencies from workspace
+      command: mv /tmp/workspace/lib .
+
+  cache_key: &cache_key
+    key: shards-{{ checksum "shard.lock" }}
+
+jobs:
+  shard_dependencies:
+    <<: *container_config
+    steps:
+      - checkout
+      - *attach_workspace
+      - restore_cache:
+          <<: *cache_key
+      - run:
+          name: Install dependencies
+          command: |
+            if [ ! -d lib ]; then
+              shards install
+            fi
+      - save_cache:
+          <<: *cache_key
+          paths:
+            - ~/crynamo/lib
+      - run:
+          name: Move dependencies to workspace
+          command: mv lib /tmp/workspace/
+      - persist_to_workspace:
+          root: *workspace_root
+          paths:
+            - lib
+  test:
+    <<: *container_config
+    steps:
+      - checkout
+      - *attach_workspace
+      - *restore_shards
+      - run:
+          name: Run specs
+          command: crystal spec
+  build:
+    <<: *container_config
+    steps:
+      - checkout
+      - *attach_workspace
+      - *restore_shards
+      - run:
+          name: Build
+          command: crystal build src/crynamo.cr
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - shard_dependencies
+      - test:
+          requires:
+            - shard_dependencies
+      - build:
+          requires:
+            - shard_dependencies
