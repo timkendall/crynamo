@@ -25,13 +25,16 @@ module Crynamo
 
     def get(table : String, key : NamedTuple)
       marshalled = Crynamo::Marshaller.to_dynamo(key)
+      
       query = {
         TableName: table,
         Key: marshalled,
       } 
       
       response = request("GetItem", query)
-      Crynamo::Marshaller.from_dynamo(response.body)
+      item = parse_item(response.body)
+      
+      Crynamo::Marshaller.from_dynamo(item)
     end
 
     def put(table : String, item : NamedTuple)
@@ -48,6 +51,11 @@ module Crynamo
 
     def query(query : NamedTuple)
       request("Query", query)
+    end
+
+    private def parse_item(body : String)
+      hash = JSON.parse(body)
+      item = hash["Item"].as_h
     end
 
     private def request(
