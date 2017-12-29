@@ -45,12 +45,12 @@ module Crynamo
       Hash.zip(keys, dynamodb_values)
     end
 
-    def from_dynamo(hash : Hash)
-      keys = hash.keys
+    def from_dynamo(item : Hash)
+      keys = item.keys
 
-      crystal_values = hash.values.map do |value|
-        dynamodb_type = value.first_key
-        dynamodb_value = value.first_value
+      crystal_values = item.values.map do |value|
+        dynamodb_type = value.as(Hash).first_key
+        dynamodb_value = value.as(Hash).first_value
 
         case dynamodb_type
         when DataTypeDescriptor.string
@@ -60,7 +60,9 @@ module Crynamo
         when DataTypeDescriptor.bool
           dynamodb_value.as(Bool)
         when DataTypeDescriptor.string_set
-          dynamodb_value.as(Array(String))
+          dynamodb_value
+            .as(Array)
+            .map(&.as(String))
         when DataTypeDescriptor.number_set
           dynamodb_value
             .as(Array)
@@ -68,7 +70,12 @@ module Crynamo
         when DataTypeDescriptor.list
           dynamodb_value.as(Array)
         when DataTypeDescriptor.map
-          dynamodb_value.as(NamedTuple)
+          # TODO Figure out what we need to do to cast to a generic Hash or NamedTuple
+          # dynamodb_value.as(Hash(String, JSON::Type))
+          # dynamodb_value.as(Hash)
+          # JSON.parse(dynamodb_value.as(String)).as_h
+          # dynamodb_value.as(NamedTuple)
+          dynamodb_value
         when DataTypeDescriptor.null
           nil
         else

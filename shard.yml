@@ -11,4 +11,9 @@ dependencies:
     github: taylorfinnell/awscr-signer
     version: ~> 0.4.0
 
+development_dependencies:
+  webmock:
+    github: manastech/webmock.cr
+    version: ~> 0.9.3
+
 license: MIT

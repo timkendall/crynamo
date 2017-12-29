@@ -42,7 +42,7 @@ describe Crynamo::Marshaller do
       :other_names => {"SS" => ["Scooby Doo", "Scooby Dooby Doo"]},
       :numbers => {"NS" => ["1","2","3","4"]},
       :list => {"L" => ["1", "foo", "true"]},
-      :map => {"M" => { foo: "bar" }},
+      :map => {"M" => { "foo": "bar" }},
       :empty => {"NULL" => "true"},
     }).should eq(expected)
   end

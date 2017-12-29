@@ -29,12 +29,17 @@ module Crynamo
       query = {
         TableName: table,
         Key: marshalled,
-      } 
+      }
+
+      result = request("GetItem", query)
+      error = result[:error]
+      data = result[:data]
+
+      # DynamoDB will return us an empty JSON object if nothing exists
+      raise Exception.new("Error getting key #{key}") if data.nil?
+      return nil if !JSON.parse(data).as_h.has_key?("Item")
       
-      response = request("GetItem", query)
-      item = parse_item(response.body)
-      
-      Crynamo::Marshaller.from_dynamo(item)
+      Crynamo::Marshaller.from_dynamo(JSON.parse(data)["Item"].as_h)
     end
 
     def put(table : String, item : NamedTuple)
@@ -53,16 +58,11 @@ module Crynamo
       request("Query", query)
     end
 
-    private def parse_item(body : String)
-      hash = JSON.parse(body)
-      item = hash["Item"].as_h
-    end
-
     private def request(
       operation : String, 
       payload : NamedTuple
     )
-      @http.post(
+      response = @http.post(
         path: "/", 
         body: payload.to_json,
         headers: HTTP::Headers{
@@ -70,6 +70,14 @@ module Crynamo
           "X-Amz-Target" => "DynamoDB_20120810.#{operation}"
         },
       )
+      status_code = response.status_code
+      body = response.body
+      
+      if status_code == 200
+        { data: body, error: nil }
+      else
+        { data: nil, error: body }
+      end
     end
   end
 end
