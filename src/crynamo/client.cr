@@ -20,9 +20,6 @@ module Crynamo
           @config.secret_access_key,
         )
         signer.sign(request)
-
-        puts request.headers
-        puts request.body
       end
     end
 
@@ -32,7 +29,9 @@ module Crynamo
         TableName: table,
         Key: marshalled,
       } 
-      request("GetItem", query)
+      
+      response = request("GetItem", query)
+      Crynamo::Marshaller.from_dynamo(response.body)
     end
 
     def put(table : String, item : NamedTuple)
