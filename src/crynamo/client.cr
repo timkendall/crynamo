@@ -1,50 +1,67 @@
+require "uri"
+require "json"
 require "http/client"
+require "awscr-signer"
+
+AWS_SERVICE = "dynamodb"
 
 module Crynamo
   class Client
     def initialize(@config : Crynamo::Configuration)
-      # TODO Setup auth signing stuff
+      uri = URI.parse(@config.endpoint)
+
+      @http = HTTP::Client.new(uri)
+
+      @http.before_request do |request|
+        signer = Awscr::Signer::Signers::V4.new(
+          AWS_SERVICE, 
+          @config.region, 
+          @config.access_key_id,
+          @config.secret_access_key,
+        )
+        signer.sign(request)
+
+        puts request.headers
+        puts request.body
+      end
     end
 
     def get(table : String, key : NamedTuple)
-      response = request(
-        "AWS-Signed-Credentials",
-        Operations::GetItem,
-        {
-          TableName: table,
-          Key: key,
-        }
-      )
-      response.body
+      marshalled = Crynamo::Marshaller.to_dynamo(key)
+      query = {
+        TableName: table,
+        Key: marshalled,
+      } 
+      request("GetItem", query)
     end
 
-    def put
+    def put(table : String, item : NamedTuple)
       # TODO
     end
     
-    def update
+    def update(table : String, key : NamedTuple, item : NamedTuple)
       # TODO
     end
 
-    def delete
+    def delete(table : String, key : NamedTuple)
       # TODO
+    end
+
+    def query(query : NamedTuple)
+      request("Query", query)
     end
 
     private def request(
-      authorization : String, 
-      operation : Operations, 
+      operation : String, 
       payload : NamedTuple
     )
-      headers =  HTTP::Headers{
-        "Authorization" => "AWS-Signed-Credentials",
-        "Content-Type" => "application/x-amz-json-1.0",
-        "X-Amz-Target" => "DynamoDB_20120810.#{operation}"
-      }
-
-      HTTP::Client.post(
-        @config.endpoint, 
-        headers: headers,
-        body: payload,
+      @http.post(
+        path: "/", 
+        body: payload.to_json,
+        headers: HTTP::Headers{
+          "Content-Type" => "application/x-amz-json-1.0",
+          "X-Amz-Target" => "DynamoDB_20120810.#{operation}"
+        },
       )
     end
   end

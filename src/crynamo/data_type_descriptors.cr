@@ -1,4 +1,6 @@
 module Crynamo
+  # Enumerate all of the supported DynamoDB values
+  # Documentation: http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_AttributeValue.html
   class DataTypeDescriptor
     def self.string
       "S"
@@ -12,7 +14,7 @@ module Crynamo
       "B"
     end
 
-    def self.boolean
+    def self.bool
       "BOOL"
     end
 
