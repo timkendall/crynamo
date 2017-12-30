@@ -6,6 +6,7 @@ require "awscr-signer"
 AWS_SERVICE = "dynamodb"
 
 module Crynamo
+  # A low-level interface for connecting to a DynamoDB cluster and interating with it.
   class Client
     def initialize(@config : Crynamo::Configuration)
       uri = URI.parse(@config.endpoint)
@@ -23,6 +24,7 @@ module Crynamo
       end
     end
 
+    # Fetches an item by key
     def get(table : String, key : NamedTuple)
       marshalled = Crynamo::Marshaller.to_dynamo(key)
 
@@ -42,6 +44,7 @@ module Crynamo
       Crynamo::Marshaller.from_dynamo(JSON.parse(data)["Item"].as_h)
     end
 
+    # Inserts an item
     def put(table : String, item : NamedTuple)
       marshalled = Crynamo::Marshaller.to_dynamo(item)
 
@@ -58,10 +61,11 @@ module Crynamo
       nil
     end
 
+    # TODO
     def update(table : String, key : NamedTuple, item : NamedTuple)
-      # TODO
     end
 
+    # Deletes an item at the specified key
     def delete(table : String, key : NamedTuple)
       marshalled = Crynamo::Marshaller.to_dynamo(key)
 

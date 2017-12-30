@@ -1,7 +1,20 @@
 module Crynamo
-  # Enumerate all of the supported DynamoDB values
-  # Documentation: http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_AttributeValue.html
+  # Represents a DynamoDB type descriptor
+  # (see http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_AttributeValue.html)
   class DataTypeDescriptor
+    enum Descriptor
+      S
+      N
+      B
+      BOOL
+      NULL
+      M
+      L
+      SS
+      NS
+      BS
+    end
+
     def self.string
       "S"
     end
@@ -40,19 +53,6 @@ module Crynamo
 
     def self.binary_set
       "BS"
-    end
-
-    enum Descriptor
-      S
-      N
-      B
-      BOOL
-      NULL
-      M
-      L
-      SS
-      NS
-      BS
     end
   end
 end

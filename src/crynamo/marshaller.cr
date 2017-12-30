@@ -15,6 +15,7 @@ module Crynamo
     class MarshallException < Exception
     end
 
+    # Converts a `NamedTuple` to a DynamoDB `Hash` representation
     def to_dynamo(tuple : NamedTuple)
       hash = tuple.to_h
       keys = tuple.keys.to_a
@@ -45,6 +46,8 @@ module Crynamo
       Hash.zip(keys, dynamodb_values)
     end
 
+    # Converts a DynamoDB `Hash` representation to a regular Crystal `Hash`
+    # TODO Convert to a `NamedTuple` instead
     def from_dynamo(item : Hash)
       keys = item.keys
 
