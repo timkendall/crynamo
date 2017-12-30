@@ -54,10 +54,6 @@ module Crynamo
       return nil
     end
 
-    # TODO
-    def update!(table : String, key : NamedTuple, item : NamedTuple)
-    end
-
     # Deletes an item at the specified key
     def delete!(table : String, key : NamedTuple)
       marshalled = Crynamo::Marshaller.to_dynamo(key)
@@ -69,11 +65,6 @@ module Crynamo
 
       request("DeleteItem", query)
       return nil
-    end
-
-    # TODO
-    def query!(query : NamedTuple)
-      # request("Query", query)
     end
 
     private def request(
@@ -92,7 +83,7 @@ module Crynamo
 
       # Note: Happy path, return what DynamoDB gives us
       return body if status_code == 200
-      
+
       # Otherwise construct and AWS::Exception object
       exc = AWS::Exception.from_json(body)
 

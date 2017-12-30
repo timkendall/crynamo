@@ -48,9 +48,6 @@ dynamodb.get!("pets", { name: "Doobie" })
 # Insert an item
 dynamodb.put!("pets", { name: "Thor", lifespan: 100 })
 
-# Update an item
-dynamodb.update!("pets", { name: "Thor" }, { lifespan: 50 })
-
 # Remove an item
 dynamodb.delete!("pets", { name: "Doobie" })
 ```
