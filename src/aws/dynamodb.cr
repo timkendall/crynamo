@@ -5,7 +5,6 @@ module AWS::DynamoDB
   enum Operation
     GetItem
     PutItem
-    UpdateItem
     DeleteItem
   end
 end

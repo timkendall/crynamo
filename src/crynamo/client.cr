@@ -34,7 +34,7 @@ module Crynamo
         Key:       marshalled,
       }
 
-      result = request("GetItem", query)
+      result = request(AWS::DynamoDB::Operation::GetItem, query)
       # DynamoDB will return us an empty JSON object if nothing exists
       return {} of String => JSON::Type if !JSON.parse(result).as_h.has_key?("Item")
 
@@ -50,7 +50,7 @@ module Crynamo
         Item:      marshalled,
       }
 
-      request("PutItem", query)
+      request(AWS::DynamoDB::Operation::PutItem, query)
       return nil
     end
 
@@ -63,19 +63,19 @@ module Crynamo
         Key:       marshalled,
       }
 
-      request("DeleteItem", query)
+      request(AWS::DynamoDB::Operation::DeleteItem, query)
       return nil
     end
 
     private def request(
-                        operation : String,
+                        operation : AWS::DynamoDB::Operation,
                         payload : NamedTuple)
       response = @http.post(
         path: "/",
         body: payload.to_json,
         headers: HTTP::Headers{
           "Content-Type" => "application/x-amz-json-1.0",
-          "X-Amz-Target" => "DynamoDB_20120810.#{operation}",
+          "X-Amz-Target" => "DynamoDB_20120810.#{operation.to_s}",
         },
       )
       status_code = response.status_code
