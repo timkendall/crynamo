@@ -63,7 +63,19 @@ module Crynamo
     end
 
     def delete(table : String, key : NamedTuple)
-      # TODO
+      marshalled = Crynamo::Marshaller.to_dynamo(key)
+
+      query = {
+        TableName: table,
+        Key: marshalled,
+      }
+
+      result = request("DeleteItem", query)
+  
+      raise Exception.new("Error deleting item for key #{key}") if result[:error]
+      # For now just return nil indicating the operation went as expected
+      # Note: We'll need to solidify an error handling model
+      nil
     end
 
     def query(query : NamedTuple)
