@@ -7,7 +7,7 @@ authors:
 description: |
   Simple DynamoDB client.
 
-crystal: 0.23.1
+crystal: 0.24.1
 
 dependencies:
   awscr-signer:
