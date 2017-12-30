@@ -40,19 +40,6 @@ dynamodb = Crynamo::Client.new(config)
 Crynamo exposes `Crynamo::Client` as a basic DynamoDB client. The client's API is low-level and mimics the base [DynamoDB Low-Level HTTP API](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Programming.LowLevelAPI.html).
 
 ```crystal
-# Create a table
-pets_table = Crynamo::Table.new(
-  name: "pets",
-  schema: {
-    name: String,
-    lifespan: Int,
-  },
-  keys: ["name"],
-  read_capacity: 1,
-  write_capacity: 1,
-)
-dynamodb.create_table(pets_table)
-
 # Get an item
 dynamodb.get("pets", { name: "Doobie" })
 
@@ -64,22 +51,6 @@ dynamodb.update("pets", { name: "Thor" }, { lifespan: 50 })
 
 # Remove an item
 dynamodb.delete("pets", { name: "Doobie" })
-
-# Perform a raw query
-dynamodb.query({
-  "TableName": "Reply",
-  "IndexName": "PostedBy-Index",
-  "Limit": 3,
-  "ConsistentRead": true,
-  "ProjectionExpression": "Id, PostedBy, ReplyDateTime",
-  "KeyConditionExpression": "Id = :v1 AND PostedBy BETWEEN :v2a AND :v2b",
-  "ExpressionAttributeValues": {
-      ":v1": {"S": "Amazon DynamoDB#DynamoDB Thread 1"},
-      ":v2a": {"S": "User A"},
-      ":v2b": {"S": "User C"}
-  },
-  "ReturnConsumedCapacity": "TOTAL"
-})
 ```
 
 ## Development
