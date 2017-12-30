@@ -4,6 +4,9 @@ version: 0.1.0
 authors:
   -  <timkendall18@gmail.com>
 
+description: |
+  Simple DynamoDB client.
+
 crystal: 0.23.1
 
 dependencies:
