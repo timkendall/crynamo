@@ -1,10 +1,12 @@
 require "json"
-require "./data_type_descriptors"
+require "../aws/dynamodb"
 
 module Crynamo
   module Marshaller
     extend self
 
+    alias DynamoDB = AWS::DynamoDB
+    
     alias Number = Int8 |
                    Int16 |
                    Int32 |
@@ -23,21 +25,21 @@ module Crynamo
       dynamodb_values = hash.values.map do |value|
         case value
         when String
-          {DataTypeDescriptor.string => value}
+          {DynamoDB::TypeDescriptor.string => value}
         when Number
-          {DataTypeDescriptor.number => value}
+          {DynamoDB::TypeDescriptor.number => value}
         when Bool
-          {DataTypeDescriptor.bool => value}
+          {DynamoDB::TypeDescriptor.bool => value}
         when Array(String)
-          {DataTypeDescriptor.string_set => value}
+          {DynamoDB::TypeDescriptor.string_set => value}
         when Array(Int8), Array(Int16), Array(Int32), Array(Int64), Array(Float32), Array(Float64)
-          {DataTypeDescriptor.number_set => value}
+          {DynamoDB::TypeDescriptor.number_set => value}
         when Array, Tuple
-          {DataTypeDescriptor.list => value}
+          {DynamoDB::TypeDescriptor.list => value}
         when Hash, NamedTuple
-          {DataTypeDescriptor.map => value}
+          {DynamoDB::TypeDescriptor.map => value}
         when Nil
-          {DataTypeDescriptor.null => true}
+          {DynamoDB::TypeDescriptor.null => true}
         else
           raise MarshallException.new "Couldn't marshal Crystal type #{typeof(value)} to DynamoDB type"
         end
@@ -56,30 +58,30 @@ module Crynamo
         dynamodb_value = value.as(Hash).first_value
 
         case dynamodb_type
-        when DataTypeDescriptor.string
+        when DynamoDB::TypeDescriptor.string
           dynamodb_value
-        when DataTypeDescriptor.number
+        when DynamoDB::TypeDescriptor.number
           dynamodb_value.as(String).to_f32
-        when DataTypeDescriptor.bool
+        when DynamoDB::TypeDescriptor.bool
           dynamodb_value.as(Bool)
-        when DataTypeDescriptor.string_set
+        when DynamoDB::TypeDescriptor.string_set
           dynamodb_value
             .as(Array)
             .map(&.as(String))
-        when DataTypeDescriptor.number_set
+        when DynamoDB::TypeDescriptor.number_set
           dynamodb_value
             .as(Array)
             .map(&.as(String).to_f32)
-        when DataTypeDescriptor.list
+        when DynamoDB::TypeDescriptor.list
           dynamodb_value.as(Array)
-        when DataTypeDescriptor.map
+        when DynamoDB::TypeDescriptor.map
           # TODO Figure out what we need to do to cast to a generic Hash or NamedTuple
           # dynamodb_value.as(Hash(String, JSON::Type))
           # dynamodb_value.as(Hash)
           # JSON.parse(dynamodb_value.as(String)).as_h
           # dynamodb_value.as(NamedTuple)
           dynamodb_value
-        when DataTypeDescriptor.null
+        when DynamoDB::TypeDescriptor.null
           nil
         else
           raise MarshallException.new "Couldn't marshal DynamoDB type #{typeof(dynamodb_type)} to Crystal type."

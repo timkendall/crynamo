@@ -1,7 +1,7 @@
-module Crynamo
+module AWS::DynamoDB
   # Represents a DynamoDB type descriptor
   # (see http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_AttributeValue.html)
-  class DataTypeDescriptor
+  class TypeDescriptor
     enum Descriptor
       S
       N
