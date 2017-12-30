@@ -1,6 +1,6 @@
 # Crynamo
 
-[![CircleCI](https://circleci.com/gh/timkendall/crynamo.svg?style=svg&circle-token=cb7f2cd61eadd947d1e775875fe21009526f62d2)](https://circleci.com/gh/timkendall/crynamo)
+[![Build Status](https://travis-ci.org/timkendall/crynamo.svg?branch=master)](https://travis-ci.org/timkendall/crynamo)
 [![GitHub release](https://img.shields.io/github/release/timkendall/crynamo.svg)](https://github.com/timkendall/crynamo/releases)
 
 
