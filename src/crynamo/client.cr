@@ -25,7 +25,7 @@ module Crynamo
 
     def get(table : String, key : NamedTuple)
       marshalled = Crynamo::Marshaller.to_dynamo(key)
-      
+    
       query = {
         TableName: table,
         Key: marshalled,
@@ -43,7 +43,19 @@ module Crynamo
     end
 
     def put(table : String, item : NamedTuple)
-      # TODO
+      marshalled = Crynamo::Marshaller.to_dynamo(item)
+
+      query = {
+        TableName: table,
+        Item: marshalled,
+      }
+
+      result = request("PutItem", query)
+  
+      raise Exception.new("Error inserting item #{item}") if result[:error]
+      # For now just return nil indicating the operation went as expected
+      # Note: We'll need to solidify an error handling model
+      nil
     end
     
     def update(table : String, key : NamedTuple, item : NamedTuple)

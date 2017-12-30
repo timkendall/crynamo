@@ -35,4 +35,30 @@ describe Crynamo::Client do
     
     data.should eq(nil)
   end
+
+  it "it supports inserting values" do
+    # Mock the insertion request
+    WebMock.stub(:post, "http://localhost:8000/?")
+      .with(body: "{\"TableName\":\"pets\",\"Item\":{\"name\":{\"S\":\"Thor\"},\"age\":{\"N\":7},\"family_friendly\":{\"BOOL\":false}}}")
+      .to_return(status: 200, body: "{}")
+    # Mock the get request
+    WebMock.stub(:post, "http://localhost:8000/?")
+      .with(body: "{\"TableName\":\"pets\",\"Key\":{\"name\":{\"S\":\"Thor\"}}}")
+      .to_return(status: 200, body: %({"Item":{"age":{"N":"7"},"family_friendly": {"BOOL": false},"name":{"S":"Thor"}}}))
+ 
+    put_data = client.put("pets", { 
+      name: "Thor",
+      age: 7,
+      family_friendly: false,
+    })
+    get_data = client.get("pets", { name: "Thor" })
+
+    put_data.should eq(nil)
+
+    get_data.should eq({
+      "name" => "Thor",
+      "age" => 7,
+      "family_friendly" => false,
+    })
+  end
 end
