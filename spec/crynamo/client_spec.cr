@@ -18,7 +18,7 @@ describe Crynamo::Client do
            .with(body: "{\"TableName\":\"pets\",\"Key\":{\"name\":{\"S\":\"Scooby\"}}}", headers: {"X-Amz-Target" => "DynamoDB_20120810.GetItem"})
            .to_return(status: 200, body: %({"Item":{"lifespan":{"N":"100"},"name":{"S":"Scooby"}}}))
 
-    data = client.get("pets", {name: "Scooby"})
+    data = client.get!("pets", {name: "Scooby"})
 
     data.should eq({
       "lifespan" => 100.0,
@@ -31,7 +31,7 @@ describe Crynamo::Client do
            .with(body: "{\"TableName\":\"pets\",\"Key\":{\"name\":{\"S\":\"Missing\"}}}", headers: {"X-Amz-Target" => "DynamoDB_20120810.GetItem"})
            .to_return(status: 200, body: "{}")
 
-    data = client.get("pets", {name: "Missing"})
+    data = client.get!("pets", {name: "Missing"})
 
     data.should eq({} of String => JSON::Type)
   end
@@ -46,12 +46,12 @@ describe Crynamo::Client do
            .with(body: "{\"TableName\":\"pets\",\"Key\":{\"name\":{\"S\":\"Thor\"}}}", headers: {"X-Amz-Target" => "DynamoDB_20120810.GetItem"})
            .to_return(status: 200, body: %({"Item":{"age":{"N":"7"},"family_friendly": {"BOOL": false},"name":{"S":"Thor"}}}))
 
-    put_data = client.put("pets", {
+    put_data = client.put!("pets", {
       name:            "Thor",
       age:             7,
       family_friendly: false,
     })
-    get_data = client.get("pets", {name: "Thor"})
+    get_data = client.get!("pets", {name: "Thor"})
 
     put_data.should eq(nil)
 
@@ -70,6 +70,6 @@ describe Crynamo::Client do
       headers: {"X-Amz-Target" => "DynamoDB_20120810.DeleteItem"}
     ).to_return(body: "{}")
 
-    client.delete("pets", {name: "Fin"}).should eq(nil)
+    client.delete!("pets", {name: "Fin"}).should eq(nil)
   end
 end

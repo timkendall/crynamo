@@ -43,16 +43,16 @@ Crynamo exposes `Crynamo::Client` as a basic DynamoDB client. The client's API i
 
 ```crystal
 # Get an item
-dynamodb.get("pets", { name: "Doobie" })
+dynamodb.get!("pets", { name: "Doobie" })
 
 # Insert an item
-dynamodb.put("pets", { name: "Thor", lifespan: 100 })
+dynamodb.put!("pets", { name: "Thor", lifespan: 100 })
 
 # Update an item
-dynamodb.update("pets", { name: "Thor" }, { lifespan: 50 })
+dynamodb.update!("pets", { name: "Thor" }, { lifespan: 50 })
 
 # Remove an item
-dynamodb.delete("pets", { name: "Doobie" })
+dynamodb.delete!("pets", { name: "Doobie" })
 ```
 
 ## Development
