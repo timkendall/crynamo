@@ -37,7 +37,7 @@ module Crynamo
 
       # DynamoDB will return us an empty JSON object if nothing exists
       raise Exception.new("Error getting key #{key}") if data.nil?
-      return nil if !JSON.parse(data).as_h.has_key?("Item")
+      return {} of String => JSON::Type if !JSON.parse(data).as_h.has_key?("Item")
 
       Crynamo::Marshaller.from_dynamo(JSON.parse(data)["Item"].as_h)
     end
