@@ -22,7 +22,7 @@ module Crynamo
       "NULL"
     end
 
-    def self.map 
+    def self.map
       "M"
     end
 

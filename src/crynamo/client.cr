@@ -14,8 +14,8 @@ module Crynamo
 
       @http.before_request do |request|
         signer = Awscr::Signer::Signers::V4.new(
-          AWS_SERVICE, 
-          @config.region, 
+          AWS_SERVICE,
+          @config.region,
           @config.access_key_id,
           @config.secret_access_key,
         )
@@ -25,10 +25,10 @@ module Crynamo
 
     def get(table : String, key : NamedTuple)
       marshalled = Crynamo::Marshaller.to_dynamo(key)
-    
+
       query = {
         TableName: table,
-        Key: marshalled,
+        Key:       marshalled,
       }
 
       result = request("GetItem", query)
@@ -38,7 +38,7 @@ module Crynamo
       # DynamoDB will return us an empty JSON object if nothing exists
       raise Exception.new("Error getting key #{key}") if data.nil?
       return nil if !JSON.parse(data).as_h.has_key?("Item")
-      
+
       Crynamo::Marshaller.from_dynamo(JSON.parse(data)["Item"].as_h)
     end
 
@@ -47,17 +47,17 @@ module Crynamo
 
       query = {
         TableName: table,
-        Item: marshalled,
+        Item:      marshalled,
       }
 
       result = request("PutItem", query)
-  
+
       raise Exception.new("Error inserting item #{item}") if result[:error]
       # For now just return nil indicating the operation went as expected
       # Note: We'll need to solidify an error handling model
       nil
     end
-    
+
     def update(table : String, key : NamedTuple, item : NamedTuple)
       # TODO
     end
@@ -67,11 +67,11 @@ module Crynamo
 
       query = {
         TableName: table,
-        Key: marshalled,
+        Key:       marshalled,
       }
 
       result = request("DeleteItem", query)
-  
+
       raise Exception.new("Error deleting item for key #{key}") if result[:error]
       # For now just return nil indicating the operation went as expected
       # Note: We'll need to solidify an error handling model
@@ -83,24 +83,23 @@ module Crynamo
     end
 
     private def request(
-      operation : String, 
-      payload : NamedTuple
-    )
+                        operation : String,
+                        payload : NamedTuple)
       response = @http.post(
-        path: "/", 
+        path: "/",
         body: payload.to_json,
         headers: HTTP::Headers{
           "Content-Type" => "application/x-amz-json-1.0",
-          "X-Amz-Target" => "DynamoDB_20120810.#{operation}"
+          "X-Amz-Target" => "DynamoDB_20120810.#{operation}",
         },
       )
       status_code = response.status_code
       body = response.body
-      
+
       if status_code == 200
-        { data: body, error: nil }
+        {data: body, error: nil}
       else
-        { data: nil, error: body }
+        {data: nil, error: body}
       end
     end
   end
