@@ -60,7 +60,7 @@ describe Crynamo::Marshaller do
   #   expect_raises Crynamo::Marshaller::MarshallException, "Couldn't marshal DynamoDB type B to Crystal type" do
   #     # We don't support binary (Base64 encoded) types yet
   #     Crynamo::Marshaller.from_dynamo({
-  #       :unsupported => {"B" => "dfx45fdgsfdg49sdg54244ds2sdgokfgsjf"},
+  #       "unsupported" => {"XX" => "dfx45fdgsfdg49sdg54244ds2sdgokfgsjf"},
   #     })
   #   end
   # end

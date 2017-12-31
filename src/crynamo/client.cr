@@ -68,8 +68,9 @@ module Crynamo
     end
 
     private def request(
-                        operation : AWS::DynamoDB::Operation,
-                        payload : NamedTuple)
+      operation : AWS::DynamoDB::Operation,
+      payload : NamedTuple
+    )
       response = @http.post(
         path: "/",
         body: payload.to_json,
@@ -85,22 +86,50 @@ module Crynamo
       return body if status_code == 200
 
       # Otherwise construct and AWS::Exception object
-      exc = AWS::Exception.from_json(body)
+      error = AWS::Error.from_json(body)
 
-      # Enumerate all AWS exceptions here
-      # TODO Use a macro
-      case exc.type
-      when "ConditionalCheckFailedException"
-        raise AWS::DynamoDB::Exceptions::ConditionalCheckFailedException.new(exc.message)
-      when "ProvisionedThroughputExceededException"
-        raise AWS::DynamoDB::Exceptions::ProvisionedThroughputExceededException.new(exc.message)
-      when "ResourceNotFoundException"
-        raise AWS::DynamoDB::Exceptions::ResourceNotFoundException.new(exc.message)
-      when "ItemCollectionSizeLimitExceededException"
-        raise AWS::DynamoDB::Exceptions::ItemCollectionSizeLimitExceededException.new(exc.message)
-      else
-        raise Exception.new(exc.message)
-      end
+      # Define the general AWS API exceptions
+      define_exception_handlers [
+        "AccessDeniedException",
+        "IncompleteSignature",
+        "InternalFailure",
+        "InvalidAction",
+        "InvalidClientTokenId",
+        "InvalidParameterCombination",
+        "InvalidParameterValue",
+        "InvalidQueryParameter",
+        "MalformedQueryString",
+        "MissingAction",
+        "MissingAuthenticationToken",
+        "MissingParameter",
+        "OptInRequired",
+        "RequestExpired",
+        "ServiceUnavailable",
+        "ThrottlingException",
+        "ValidationError",
+      ], AWS::Exceptions
+
+      # Define the DynamoDB-specific exceptions
+      define_exception_handlers [
+        "ConditionalCheckFailedException",
+        "ProvisionedThroughputExceededException",
+        "ResourceNotFoundException",
+        "ItemCollectionSizeLimitExceededException",
+      ], AWS::DynamoDB::Exceptions
+
+      # Finally, raise a generic exception if none of the above match
+      raise Exception.new(error.message)
+    end
+
+    private macro define_exception_handlers(exceptions, mmodule)
+      {% begin %}
+        case error.type
+        {% for exception in exceptions %}
+          when {{exception}}
+            raise {{mmodule.id}}::{{exception.id}}.new(error.message)
+        {% end %}
+        end
+      {% end %}
     end
   end
 end
