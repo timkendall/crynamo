@@ -6,6 +6,11 @@
 
 Crynamo is a simple interface to [Amazon's DynamoDB](https://aws.amazon.com/dynamodb/) written in Crystal. Right now it is a fairly low-level wrapper that provides type marshalling between your Crystal program and DynamoDB.
 
+- ✔️ Simple API with `get`, `put`, and `delete` support
+- ✔️ DynamoDB type marshalling
+- ✔️ Native exceptions for every AWS error
+- ✔️ Non-blocking
+
 ## Installation
 
 Add this to your application's `shard.yml`:
