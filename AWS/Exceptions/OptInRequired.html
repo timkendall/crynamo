@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta id="repository-name" content="github.com/timkendall/crynamo">
+  <link href="../../css/style.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="../../js/doc.js"></script>
+  <title>AWS::Exceptions::OptInRequired - github.com/timkendall/crynamo</title>
+</head>
+<body>
+
+<div id="types-list">
+  <div id="search-box">
+    <input type="search" id="search-input" placeholder="Search...">
+  </div>
+
+  <ul>
+    <li><a href="../../index.html">README</a></li>
+  </ul>
+
+  <ul>
+  
+  <li class="parent open current" data-id="github.com/timkendall/crynamo/AWS" data-name="aws">
+      <a href="../../AWS.html">AWS</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="github.com/timkendall/crynamo/AWS/DynamoDB" data-name="aws::dynamodb">
+      <a href="../../AWS/DynamoDB.html">DynamoDB</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="github.com/timkendall/crynamo/AWS/DynamoDB/Exceptions" data-name="aws::dynamodb::exceptions">
+      <a href="../../AWS/DynamoDB/Exceptions.html">Exceptions</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/AWS/DynamoDB/Exceptions/ConditionalCheckFailedException" data-name="aws::dynamodb::exceptions::conditionalcheckfailedexception">
+      <a href="../../AWS/DynamoDB/Exceptions/ConditionalCheckFailedException.html">ConditionalCheckFailedException</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/AWS/DynamoDB/Exceptions/ItemCollectionSizeLimitExceededException" data-name="aws::dynamodb::exceptions::itemcollectionsizelimitexceededexception">
+      <a href="../../AWS/DynamoDB/Exceptions/ItemCollectionSizeLimitExceededException.html">ItemCollectionSizeLimitExceededException</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/AWS/DynamoDB/Exceptions/ProvisionedThroughputExceededException" data-name="aws::dynamodb::exceptions::provisionedthroughputexceededexception">
+      <a href="../../AWS/DynamoDB/Exceptions/ProvisionedThroughputExceededException.html">ProvisionedThroughputExceededException</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/AWS/DynamoDB/Exceptions/ResourceNotFoundException" data-name="aws::dynamodb::exceptions::resourcenotfoundexception">
+      <a href="../../AWS/DynamoDB/Exceptions/ResourceNotFoundException.html">ResourceNotFoundException</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/AWS/DynamoDB/Operation" data-name="aws::dynamodb::operation">
+      <a href="../../AWS/DynamoDB/Operation.html">Operation</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/AWS/DynamoDB/TypeDescriptor" data-name="aws::dynamodb::typedescriptor">
+      <a href="../../AWS/DynamoDB/TypeDescriptor.html">TypeDescriptor</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/AWS/Error" data-name="aws::error">
+      <a href="../../AWS/Error.html">Error</a>
+      
+    </li>
+  
+  <li class="parent open current" data-id="github.com/timkendall/crynamo/AWS/Exceptions" data-name="aws::exceptions">
+      <a href="../../AWS/Exceptions.html">Exceptions</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/AWS/Exceptions/AccessDeniedException" data-name="aws::exceptions::accessdeniedexception">
+      <a href="../../AWS/Exceptions/AccessDeniedException.html">AccessDeniedException</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/AWS/Exceptions/IncompleteSignature" data-name="aws::exceptions::incompletesignature">
+      <a href="../../AWS/Exceptions/IncompleteSignature.html">IncompleteSignature</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/AWS/Exceptions/InternalFailure" data-name="aws::exceptions::internalfailure">
+      <a href="../../AWS/Exceptions/InternalFailure.html">InternalFailure</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/AWS/Exceptions/InvalidAction" data-name="aws::exceptions::invalidaction">
+      <a href="../../AWS/Exceptions/InvalidAction.html">InvalidAction</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/AWS/Exceptions/InvalidClientTokenId" data-name="aws::exceptions::invalidclienttokenid">
+      <a href="../../AWS/Exceptions/InvalidClientTokenId.html">InvalidClientTokenId</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/AWS/Exceptions/InvalidParameterCombination" data-name="aws::exceptions::invalidparametercombination">
+      <a href="../../AWS/Exceptions/InvalidParameterCombination.html">InvalidParameterCombination</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/AWS/Exceptions/InvalidParameterValue" data-name="aws::exceptions::invalidparametervalue">
+      <a href="../../AWS/Exceptions/InvalidParameterValue.html">InvalidParameterValue</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/AWS/Exceptions/InvalidQueryParameter" data-name="aws::exceptions::invalidqueryparameter">
+      <a href="../../AWS/Exceptions/InvalidQueryParameter.html">InvalidQueryParameter</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/AWS/Exceptions/MalformedQueryString" data-name="aws::exceptions::malformedquerystring">
+      <a href="../../AWS/Exceptions/MalformedQueryString.html">MalformedQueryString</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/AWS/Exceptions/MissingAction" data-name="aws::exceptions::missingaction">
+      <a href="../../AWS/Exceptions/MissingAction.html">MissingAction</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/AWS/Exceptions/MissingAuthenticationToken" data-name="aws::exceptions::missingauthenticationtoken">
+      <a href="../../AWS/Exceptions/MissingAuthenticationToken.html">MissingAuthenticationToken</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/AWS/Exceptions/MissingParameter" data-name="aws::exceptions::missingparameter">
+      <a href="../../AWS/Exceptions/MissingParameter.html">MissingParameter</a>
+      
+    </li>
+  
+  <li class=" current" data-id="github.com/timkendall/crynamo/AWS/Exceptions/OptInRequired" data-name="aws::exceptions::optinrequired">
+      <a href="../../AWS/Exceptions/OptInRequired.html">OptInRequired</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/AWS/Exceptions/RequestExpired" data-name="aws::exceptions::requestexpired">
+      <a href="../../AWS/Exceptions/RequestExpired.html">RequestExpired</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/AWS/Exceptions/ServiceUnavailable" data-name="aws::exceptions::serviceunavailable">
+      <a href="../../AWS/Exceptions/ServiceUnavailable.html">ServiceUnavailable</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/AWS/Exceptions/ThrottlingException" data-name="aws::exceptions::throttlingexception">
+      <a href="../../AWS/Exceptions/ThrottlingException.html">ThrottlingException</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/AWS/Exceptions/ValidationError" data-name="aws::exceptions::validationerror">
+      <a href="../../AWS/Exceptions/ValidationError.html">ValidationError</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/timkendall/crynamo/Crynamo" data-name="crynamo">
+      <a href="../../Crynamo.html">Crynamo</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/Crynamo/Client" data-name="crynamo::client">
+      <a href="../../Crynamo/Client.html">Client</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/Crynamo/Configuration" data-name="crynamo::configuration">
+      <a href="../../Crynamo/Configuration.html">Configuration</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/timkendall/crynamo/Crynamo/Marshaller" data-name="crynamo::marshaller">
+      <a href="../../Crynamo/Marshaller.html">Marshaller</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="github.com/timkendall/crynamo/Crynamo/Marshaller/DynamoDB" data-name="crynamo::marshaller::dynamodb">
+      <a href="../../Crynamo/Marshaller/DynamoDB.html">DynamoDB</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="github.com/timkendall/crynamo/AWS/DynamoDB/Exceptions" data-name="aws::dynamodb::exceptions">
+      <a href="../../AWS/DynamoDB/Exceptions.html">Exceptions</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/AWS/DynamoDB/Exceptions/ConditionalCheckFailedException" data-name="aws::dynamodb::exceptions::conditionalcheckfailedexception">
+      <a href="../../AWS/DynamoDB/Exceptions/ConditionalCheckFailedException.html">ConditionalCheckFailedException</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/AWS/DynamoDB/Exceptions/ItemCollectionSizeLimitExceededException" data-name="aws::dynamodb::exceptions::itemcollectionsizelimitexceededexception">
+      <a href="../../AWS/DynamoDB/Exceptions/ItemCollectionSizeLimitExceededException.html">ItemCollectionSizeLimitExceededException</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/AWS/DynamoDB/Exceptions/ProvisionedThroughputExceededException" data-name="aws::dynamodb::exceptions::provisionedthroughputexceededexception">
+      <a href="../../AWS/DynamoDB/Exceptions/ProvisionedThroughputExceededException.html">ProvisionedThroughputExceededException</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/AWS/DynamoDB/Exceptions/ResourceNotFoundException" data-name="aws::dynamodb::exceptions::resourcenotfoundexception">
+      <a href="../../AWS/DynamoDB/Exceptions/ResourceNotFoundException.html">ResourceNotFoundException</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/AWS/DynamoDB/Operation" data-name="aws::dynamodb::operation">
+      <a href="../../AWS/DynamoDB/Operation.html">Operation</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/AWS/DynamoDB/TypeDescriptor" data-name="aws::dynamodb::typedescriptor">
+      <a href="../../AWS/DynamoDB/TypeDescriptor.html">TypeDescriptor</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/Crynamo/Marshaller/MarshallException" data-name="crynamo::marshaller::marshallexception">
+      <a href="../../Crynamo/Marshaller/MarshallException.html">MarshallException</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/timkendall/crynamo/Crynamo/Marshaller/Number" data-name="crynamo::marshaller::number">
+      <a href="../../Crynamo/Marshaller/Number.html">Number</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+</div>
+
+<div id="main-content">
+<h1 class="type-name">
+
+  <span class="kind">class</span> AWS::Exceptions::OptInRequired
+
+</h1>
+
+
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../AWS/Exceptions/OptInRequired.html">AWS::Exceptions::OptInRequired</a></li><li class="superclass">Exception</li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+
+
+
+
+  <h2>Overview</h2>
+
+  <p>Raised when the AWS access key ID needs a subscription for the service.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>Defined in:</h2>
+  
+    
+      <a href="https://github.com/timkendall/crynamo/blob/28fe9640391624992a789fc8ecb73cb6469b96aa/src/aws/exceptions.cr#L53" target="_blank">aws/exceptions.cr</a>
+    
+    <br/>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="methods-inherited">
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+</div>
+
+</body>
+</html>
