@@ -2,19 +2,6 @@ module AWS::DynamoDB
   # Represents a DynamoDB type descriptor
   # (see http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_AttributeValue.html)
   class TypeDescriptor
-    enum Descriptor
-      S
-      N
-      B
-      BOOL
-      NULL
-      M
-      L
-      SS
-      NS
-      BS
-    end
-
     def self.string
       "S"
     end
