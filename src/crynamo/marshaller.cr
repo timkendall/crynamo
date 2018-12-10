@@ -6,7 +6,7 @@ module Crynamo
     extend self
 
     alias DynamoDB = AWS::DynamoDB
-    
+
     alias Number = Int8 |
                    Int16 |
                    Int32 |
@@ -18,7 +18,7 @@ module Crynamo
     end
 
     # Converts a `NamedTuple` to a DynamoDB `Hash` representation
-    def to_dynamo(tuple : NamedTuple)
+    def to_dynamo(tuple : NamedTuple) : Hash
       hash = tuple.to_h
       keys = tuple.keys.to_a
 
@@ -48,9 +48,22 @@ module Crynamo
       Hash.zip(keys, dynamodb_values)
     end
 
+    # { product_id: product.id }
+    def to_expressions(tuple : NamedTuple)# : Tuple(String, Hash(String, Hash(String, String | Hash(String, String) | Hash(String, Bool))))
+      key_condition_expression = tuple.keys.to_a.map{|key| "#{key} = :#{key}"}.join(" AND ")
+
+      expression_attribute_values = {} of String => Hash(String, Bool) | Hash(String, String)
+      marshalled = to_dynamo(tuple)
+      marshalled.each do |key, value|
+        expression_attribute_values[":#{key}"] = value
+      end
+
+      {key_condition_expression, expression_attribute_values}
+    end
+
     # Converts a DynamoDB `Hash` representation to a regular Crystal `Hash`
     # TODO Convert to a `NamedTuple` instead
-    def from_dynamo(item : Hash)
+    def from_dynamo(item : Hash(String, JSON::Any)) : Hash
       keys = item.keys
 
       crystal_values = item.values.map do |value|
@@ -89,6 +102,10 @@ module Crynamo
       end
       
       Hash.zip(keys, crystal_values)
+    end
+
+    def from_dynamo(items : Array(Hash)) : Array(Hash(String, Array(Float32) | Array(JSON::Any) | Array(String) | Bool | Float32 | JSON::Any | Nil))
+      items.map{ |item| from_dynamo(item) }
     end
   end
 end

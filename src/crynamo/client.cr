@@ -25,6 +25,20 @@ module Crynamo
       end
     end
 
+    def query!(table : String, key : NamedTuple)
+      key_condition_expression, expression_attribute_values = Crynamo::Marshaller.to_expressions(key)
+      query = {
+        TableName: table,
+        KeyConditionExpression: key_condition_expression,
+        ExpressionAttributeValues: expression_attribute_values
+      }
+
+      result = request(AWS::DynamoDB::Operation::Query, query)
+      # DynamoDB will return us an empty JSON object if nothing exists
+      return [] of Hash(String, JSON::Any) unless JSON.parse(result).as_h.has_key?("Items")
+      Crynamo::Marshaller.from_dynamo(JSON.parse(result)["Items"].as_a.map(&.as_h))
+    end
+
     # Fetches an item by key
     def get!(table : String, key : NamedTuple)
       marshalled = Crynamo::Marshaller.to_dynamo(key)

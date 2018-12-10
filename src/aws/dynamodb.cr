@@ -6,5 +6,6 @@ module AWS::DynamoDB
     GetItem
     PutItem
     DeleteItem
+    Query
   end
 end
