@@ -7,16 +7,16 @@ authors:
 description: |
   Simple DynamoDB client.
 
-crystal: 0.24.1
+crystal: 0.27.0
 
 dependencies:
   awscr-signer:
     github: taylorfinnell/awscr-signer
-    version: ~> 0.4.0
+    version: ~> 0.5.3
 
 development_dependencies:
   webmock:
     github: manastech/webmock.cr
-    version: ~> 0.9.3
+    version: ~> 0.10.0
 
 license: MIT

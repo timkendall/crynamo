@@ -36,7 +36,7 @@ module Crynamo
 
       result = request(AWS::DynamoDB::Operation::GetItem, query)
       # DynamoDB will return us an empty JSON object if nothing exists
-      return {} of String => JSON::Type if !JSON.parse(result).as_h.has_key?("Item")
+      return {} of String => JSON::Any if !JSON.parse(result).as_h.has_key?("Item")
 
       Crynamo::Marshaller.from_dynamo(JSON.parse(result)["Item"].as_h)
     end

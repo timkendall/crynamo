@@ -33,7 +33,7 @@ describe Crynamo::Client do
 
     data = client.get!("pets", {name: "Missing"})
 
-    data.should eq({} of String => JSON::Type)
+    data.should eq({} of String => JSON::Any)
   end
 
   it "it supports inserting values" do

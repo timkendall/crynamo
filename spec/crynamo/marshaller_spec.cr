@@ -26,16 +26,16 @@ describe Crynamo::Marshaller do
 
   it "marshalls DynamoDB types to Crystal types" do
     expected = {
-      :name        => "Scooby",
-      :age         => 7.0,
-      :is_cool     => true,
-      :other_names => ["Scooby Doo", "Scooby Dooby Doo"],
-      :numbers     => [1.0, 2.0, 3.0, 4.0],
-      :list        => ["1", "foo", "true"],
-      :map         => {foo: "bar"},
-      :empty       => nil,
+      "name"        => "Scooby",
+      "age"         => 7.0_f32,
+      "is_cool"     => true,
+      "other_names" => ["Scooby Doo", "Scooby Dooby Doo"],
+      "numbers"     => [1.0_f32, 2.0_f32, 3.0_f32, 4.0_f32],
+      "list"        => ["1", "foo", "true"],
+      "map"         => {"foo" => "bar"},
+      "empty"       => nil,
     }
-    Crynamo::Marshaller.from_dynamo({
+    Crynamo::Marshaller.from_dynamo(JSON.parse({
       :name        => {"S" => "Scooby"},
       :age         => {"N" => "7"},
       :is_cool     => {"BOOL" => true},
@@ -44,7 +44,7 @@ describe Crynamo::Marshaller do
       :list        => {"L" => ["1", "foo", "true"]},
       :map         => {"M" => {"foo": "bar"}},
       :empty       => {"NULL" => "true"},
-    }).should eq(expected)
+    }.to_json).as_h).should eq(expected)
   end
 
   it "raises if Crystal type can't be marshalled" do
