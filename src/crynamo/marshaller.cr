@@ -27,13 +27,13 @@ module Crynamo
         when String
           {DynamoDB::TypeDescriptor.string => value}
         when Number
-          {DynamoDB::TypeDescriptor.number => value}
+          {DynamoDB::TypeDescriptor.number => value.to_s}
         when Bool
           {DynamoDB::TypeDescriptor.bool => value}
         when Array(String)
           {DynamoDB::TypeDescriptor.string_set => value}
         when Array(Int8), Array(Int16), Array(Int32), Array(Int64), Array(Float32), Array(Float64)
-          {DynamoDB::TypeDescriptor.number_set => value}
+          {DynamoDB::TypeDescriptor.number_set => value.map(&.to_s)}
         when Array, Tuple
           {DynamoDB::TypeDescriptor.list => value}
         when Hash, NamedTuple
@@ -100,7 +100,7 @@ module Crynamo
           raise MarshallException.new "Couldn't marshal DynamoDB type #{typeof(dynamodb_type)} to Crystal type."
         end
       end
-      
+
       Hash.zip(keys, crystal_values)
     end
 
