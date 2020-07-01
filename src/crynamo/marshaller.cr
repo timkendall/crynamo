@@ -48,32 +48,92 @@ module Crynamo
       Hash.zip(keys, dynamodb_values)
     end
 
+    def first_key(value : JSON::Any)
+      value.as_h.first_key
+    end
+
+    def first_key(value : Hash)
+      value.as(Hash).first_key
+    end
+
+    def first_value(value : JSON::Any)
+      value.as_h.first_value
+    end
+
+    def first_value(value : Hash)
+      value.as(Hash).first_value
+    end
+
+    def as_f32(dynamodb_value : JSON::Any)
+      dynamodb_value.as_s.to_f32
+    end
+
+    def as_f32(dynamodb_value)
+      dynamodb_value.as(String).to_f32
+    end
+
+    def as_bool(dynamodb_value : JSON::Any)
+      dynamodb_value.as_bool
+    end
+
+    def as_bool(dynamodb_value)
+      dynamodb_value.as(Bool)
+    end
+
+    def as_string_set(dynamodb_value : JSON::Any)
+      dynamodb_value
+        .as_a
+        .map(&.as_s)
+    end
+
+    def as_string_set(dynamodb_value)
+      dynamodb_value
+        .as(Array)
+        .map(&.as(String))
+    end
+
+    def as_number_set(dynamodb_value : JSON::Any)
+      dynamodb_value
+        .as_a
+        .map(&.as_s.to_f32)
+    end
+
+    def as_number_set(dynamodb_value)
+      dynamodb_value
+        .as(Array)
+        .map(&.as(String).to_f32)
+    end
+
+    def as_array(dynamodb_value : JSON::Any)
+      dynamodb_value.as_a
+    end
+
+    def as_array(dynamodb_value)
+      dynamodb_value.as(Array)
+    end
+
     # Converts a DynamoDB `Hash` representation to a regular Crystal `Hash`
     # TODO Convert to a `NamedTuple` instead
     def from_dynamo(item : Hash)
       keys = item.keys
 
       crystal_values = item.values.map do |value|
-        dynamodb_type = value.as(Hash).first_key
-        dynamodb_value = value.as(Hash).first_value
+        dynamodb_type = first_key(value)
+        dynamodb_value = first_value(value)
 
         case dynamodb_type
         when DynamoDB::TypeDescriptor.string
           dynamodb_value
         when DynamoDB::TypeDescriptor.number
-          dynamodb_value.as(String).to_f32
+          as_f32(dynamodb_value)
         when DynamoDB::TypeDescriptor.bool
-          dynamodb_value.as(Bool)
+          as_bool(dynamodb_value)
         when DynamoDB::TypeDescriptor.string_set
-          dynamodb_value
-            .as(Array)
-            .map(&.as(String))
+          as_string_set(dynamodb_value)
         when DynamoDB::TypeDescriptor.number_set
-          dynamodb_value
-            .as(Array)
-            .map(&.as(String).to_f32)
+          as_number_set(dynamodb_value)
         when DynamoDB::TypeDescriptor.list
-          dynamodb_value.as(Array)
+          as_array(dynamodb_value)
         when DynamoDB::TypeDescriptor.map
           # TODO Figure out what we need to do to cast to a generic Hash or NamedTuple
           # dynamodb_value.as(Hash(String, JSON::Type))

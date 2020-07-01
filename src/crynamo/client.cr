@@ -26,9 +26,13 @@ module Crynamo
     end
 
     # Fetches an item by key
-    def get!(table : String, key : NamedTuple)
-      marshalled = Crynamo::Marshaller.to_dynamo(key)
-
+    def query!(
+      table : String,
+      key_condition_expression : String | Nil  = nil,
+      flter_expression : String | Nil = nil,
+      expression_attribute_values : NamedTuple | Nil = nil
+    )
+      marshalled = Crynamo::Marshaller.to_dynamo(expression_attribute_values)
       query = {
         TableName: table,
         Key:       marshalled,
@@ -36,7 +40,22 @@ module Crynamo
 
       result = request(AWS::DynamoDB::Operation::GetItem, query)
       # DynamoDB will return us an empty JSON object if nothing exists
-      return {} of String => JSON::Type if !JSON.parse(result).as_h.has_key?("Item")
+      return {} of String => JSON::Any if !JSON.parse(result).as_h.has_key?("Item")
+
+      Crynamo::Marshaller.from_dynamo(JSON.parse(result)["Item"].as_h)
+    end
+
+    # Fetches an item by key
+    def get!(table : String, key : NamedTuple)
+      marshalled = Crynamo::Marshaller.to_dynamo(key)
+      query = {
+        TableName: table,
+        Key:       marshalled,
+      }
+
+      result = request(AWS::DynamoDB::Operation::GetItem, query)
+      # DynamoDB will return us an empty JSON object if nothing exists
+      return {} of String => JSON::Any if !JSON.parse(result).as_h.has_key?("Item")
 
       Crynamo::Marshaller.from_dynamo(JSON.parse(result)["Item"].as_h)
     end
@@ -107,6 +126,7 @@ module Crynamo
         "ServiceUnavailable",
         "ThrottlingException",
         "ValidationError",
+        "ValidationException"
       ], AWS::Exceptions
 
       # Define the DynamoDB-specific exceptions
