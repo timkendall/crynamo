@@ -68,4 +68,8 @@ module AWS::Exceptions
   # Raised when the input fails to satisfy the constraints specified by an AWS service.
   class ValidationError < Exception
   end
+
+  # Raised when the input fails to satisfy the constraints specified by an AWS service.
+  class ValidationException < Exception
+  end
 end
